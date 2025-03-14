@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smokeless_movies/movie/moviedetails_model.dart';
+import 'package:smokeless_movies/movielistmodels/popular_movies_model.dart';
 import 'package:smokeless_movies/tvmodels/season_details_model.dart';
 import 'package:smokeless_movies/searchmodels/movie_search_results_model.dart';
 import 'package:smokeless_movies/searchmodels/multi_search_results_model.dart';
@@ -30,6 +31,11 @@ class TMDBAPIS {
   //tvseries constant
   static String tvdetailsEndpoint = "$baseUrl/tv";
   static String seasondetailsEndpoint = "$baseUrl/tv";
+  //movielist constants
+  static String popularMoviesEndpoint = "$baseUrl/movie/popular";
+  static String upcomingMoviesEndpoint = "$baseUrl/movie/now_playing";
+  static String latestMoviesEndpoint = "$baseUrl/movie/top_rated";
+  static String topRatedMoviesEndpoint = "$baseUrl/movie/upcoming";
 
   static Future<Map<String, dynamic>> callAPI(String url) async {
     log("url: $url");
@@ -202,4 +208,20 @@ class TMDBAPIS {
     }
     return results;
   }
+
+  /* static Future<PopularMoviesModel> popularMovies() async {
+    String url = "$popularMoviesEndpoint";
+    Map<String, dynamic> rawMap = await callAPI(url);
+    // Now I have my tvseason results
+    late PopularMoviesModel results;
+    // Attempt to convert the JSON into your model
+    try {
+      results = popularMoviesFromMap(str)
+      log("Successfully parsed TV results data:");
+    } catch (e, stackTrace) {
+      log("Unexpected error during season details results model conversion: $e\n$stackTrace");
+      throw Exception("TV Results Data conversion failed: $e");
+    }
+    return results;
+  } */
 }

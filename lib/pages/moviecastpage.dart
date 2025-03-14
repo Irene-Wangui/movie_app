@@ -100,7 +100,7 @@ class MovieCastPage extends StatelessWidget {
             height: 180,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: cast.length,
+                itemCount: crew.length,
                 itemBuilder: (context, index) {
                   var crewitem = crew[index];
                   return Padding(
@@ -197,7 +197,11 @@ class MovieCastPage extends StatelessWidget {
                                 height: 150,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                                errorWidget: (context, url, error) => const Icon(
+                                  Icons.image_not_supported,
+                                  size: 30,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                             Text(

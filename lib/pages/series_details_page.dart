@@ -8,7 +8,7 @@ import 'package:smokeless_movies/utils/tmdbapis.dart';
 class SeriesDetailsPage extends StatelessWidget {
   final String id;
   SeriesDetailsPage({super.key, required this.id});
-  List<int> seasonsList = [];
+  final List<int> seasonsList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -73,42 +73,39 @@ class SeriesDetailsPage extends StatelessWidget {
                                       width: 130,
                                       height: 100,
                                     ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${seriesDetails.name}',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${seriesDetails.name}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Text('${seriesDetails.firstAirDate!.year}'),
+                                            const Text("."),
+                                            const SizedBox(width: 5),
+                                            Row(
+                                              children: [
+                                                Text('${seriesDetails.numberOfSeasons}seasons'),
+                                                const SizedBox(width: 5),
+                                                Text("${seriesDetails.numberOfEpisodes}episodes"),
+                                              ],
                                             ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Text('${seriesDetails.firstAirDate!.year}'),
-                                              const Text("."),
-                                              const SizedBox(width: 5),
-                                              Row(
-                                                children: [
-                                                  Text('${seriesDetails.numberOfSeasons}seasons'),
-                                                  const SizedBox(width: 5),
-                                                  Text("${seriesDetails.numberOfEpisodes}episodes"),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Row(
-                                            children: [
-                                              const Icon(Icons.star, color: Colors.yellow),
-                                              Text(seriesDetails.voteAverage!.toStringAsFixed(1)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.star, color: Colors.yellow),
+                                            Text(seriesDetails.voteAverage!.toStringAsFixed(1)),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -188,4 +185,4 @@ class SeriesDetailsPage extends StatelessWidget {
               );
             }));
   }
- }
+}

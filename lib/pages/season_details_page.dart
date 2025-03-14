@@ -18,81 +18,84 @@ class SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        /* children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Seasons",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ), */
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: EdgeInsets.zero,
+      ),
+      SizedBox(
+        height: 50,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: widget.seasons.map((season) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+              child: TextButton(
+                onPressed: () {
+                  setState(() {
+                    selectedSeason = season;
+                  });
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: selectedSeason == season ? Colors.purple : Colors.grey[300],
+                  foregroundColor: selectedSeason == season ? Colors.white : Colors.black,
+                ),
+                child: Text("Season $season"),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
 
-        children: [
-          SizedBox(
-            height: 50,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: widget.seasons.map((season) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedSeason = season;
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: selectedSeason == season ? Colors.purple : Colors.grey[300],
-                      foregroundColor: selectedSeason == season ? Colors.white : Colors.black,
+      // Episodes List
+      Expanded(
+        child: FutureBuilder<SeasonDetailsModel>(
+          future: TMDBAPIS.tvSeasonDetails(widget.seriesId, selectedSeason.toString()),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text("Failed to load season details"));
+            } else if (!snapshot.hasData) {
+              return const Center(child: Text("Season not available"));
+            }
+
+            final season = snapshot.data!;
+
+            return ListView.builder(
+              itemCount: season.episodes!.length,
+              itemBuilder: (context, index) {
+                final episode = season.episodes![index];
+
+                return SizedBox(
+                  child: ListTile(
+                    leading: CachedNetworkImage(
+                      imageUrl: "https://image.tmdb.org/t/p/w780${episode.stillPath}",
+                      width: 145,
+                      height: 250,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.image_not_supported,
+                        size: 30,
+                        color: Colors.black45,
+                      ),
                     ),
-                    child: Text("Season $season"),
+                    title: Column(
+                      children: [
+                        Text("Episode ${episode.episodeNumber}", style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                          "${episode.name}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
                 );
-              }).toList(),
-            ),
-          ),
-          // Episodes List
-          Expanded(
-            child: FutureBuilder<SeasonDetailsModel>(
-              future: TMDBAPIS.tvSeasonDetails(widget.seriesId, selectedSeason.toString()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text("Failed to load season details"));
-                } else if (!snapshot.hasData) {
-                  return const Center(child: Text("Season not available"));
-                }
-
-                final season = snapshot.data!;
-
-                return ListView.builder(
-                  itemCount: season.episodes!.length,
-                  itemBuilder: (context, index) {
-                    final episode = season.episodes![index];
-
-                    return ListTile(
-                      contentPadding: EdgeInsets.all(8.0),
-                      leading: CachedNetworkImage(
-                        imageUrl: "https://image.tmdb.org/t/p/w500${episode.stillPath}",
-                        width: 50,
-                        height: 75,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) => const Icon(Icons.image_not_supported),
-                      ),
-                      title: Text(
-                        "Episode ${episode.episodeNumber}: ${episode.name}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    );
-                  },
-                );
               },
-            ),
-          ),
-        ]);
+            );
+          },
+        ),
+      ),
+    ]);
   }
 }

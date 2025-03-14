@@ -61,7 +61,11 @@ class TrendingTvWidgets extends StatelessWidget {
                             width: 100,
                             fit: BoxFit.cover,
                             placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            errorWidget: (context, url, error) => const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.black45,
+                              size: 30,
+                            ),
                           ),
                           Text(
                             "${tv.name}",
