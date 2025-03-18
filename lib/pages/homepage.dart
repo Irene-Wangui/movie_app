@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:smokeless_movies/pages/movie_details_page.dart';
+import 'package:smokeless_movies/pages/movie_list_page.dart';
 import 'package:smokeless_movies/searchmodels/movie_search_results_model.dart';
 import 'package:smokeless_movies/searchmodels/multi_search_results_model.dart';
 import 'package:smokeless_movies/trendingmodels/trending_movies_results.dart';
 import 'package:smokeless_movies/trendingmodels/trending_tv_results.dart';
 import 'package:smokeless_movies/utils/tmdbapis.dart';
+import 'package:smokeless_movies/widgets/medial_list_widget.dart';
 import 'package:smokeless_movies/widgets/search/smokeless_search_delegate.dart';
 import 'package:smokeless_movies/widgets/trending/trending_movies_widgets.dart';
 import 'package:smokeless_movies/widgets/trending/trending_tv_widgets.dart';
@@ -46,8 +48,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Smokeless Movies')),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(48, 0, 16, 0),
@@ -122,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   onPressed: () {
                     log("Pressed View All");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MovieListPage()));
                   },
                   child: const Text(
                     "View All",
@@ -131,7 +133,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const TrendingMoviesWidgets(),
+
+          TrendingMoviesWidgets(),
 
           //Trending Tvshows section
           Padding(
