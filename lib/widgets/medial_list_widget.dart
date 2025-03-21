@@ -28,7 +28,7 @@ class MediaList extends StatelessWidget {
     return Column(
       children: [
         ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: 300, minHeight: 200),
+          constraints: BoxConstraints(maxHeight: 250, minHeight: 200),
           child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,

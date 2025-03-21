@@ -1,9 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:smokeless_movies/controllers/auth_controller.dart';
+import 'package:smokeless_movies/firebase_options.dart';
 import 'package:smokeless_movies/pages/auth/sign_in_page.dart';
-import 'package:smokeless_movies/pages/homepage.dart';
-import 'package:smokeless_movies/widgets/landing_page.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -13,8 +20,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
+    Get.put(AuthController(), permanent: true);
+    return GetMaterialApp(
+        title: 'Smokeless Movies',
         theme: ThemeData(
           // This is the theme of your application.
           //
@@ -34,6 +42,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SignInPage());
+        home: SignInPage());
   }
 }

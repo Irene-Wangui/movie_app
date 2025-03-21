@@ -70,8 +70,8 @@ class SeriesDetailsPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(
-                                      width: 130,
-                                      height: 100,
+                                      width: 110,
+                                      //height: 100,
                                     ),
                                     Column(
                                       children: [

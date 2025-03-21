@@ -1,8 +1,17 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:smokeless_movies/movie/moviedetails_model.dart';
 import 'package:smokeless_movies/pages/moviecastpage.dart';
+import 'package:smokeless_movies/utils/firebase_apis.dart';
 import 'package:smokeless_movies/utils/tmdbapis.dart';
+import 'package:uuid/uuid.dart';
+
+import 'my _media_model/media_model.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   final String id;
@@ -67,8 +76,7 @@ class MovieDetailsPage extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(
-                                          width: 130,
-                                          height: 100,
+                                          width: 110,
                                         ),
                                         Flexible(
                                           child: Column(
@@ -97,6 +105,28 @@ class MovieDetailsPage extends StatelessWidget {
                                                 children: [
                                                   const Icon(Icons.star, color: Colors.yellow),
                                                   Text(moviedetails.voteAverage!.toStringAsFixed(1)),
+                                                  Spacer(),
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      log('should toogle bookmark');
+                                                      //implement my media model
+                                                      final media = MymediaModel(
+                                                        id: Uuid().v4(),
+                                                        tmdbId: moviedetails.id.toString(),
+                                                        title: moviedetails.title.toString(),
+                                                        mediaType: 'movie',
+                                                        posterPath: moviedetails.posterPath,
+                                                        dateAdded: DateTime.now(),
+                                                        releaseDate: moviedetails.releaseDate,
+                                                      );
+                                                      log(jsonEncode(media.toMap()));
+                                                      FirebaseApis.uploadMyMedia(media);
+                                                    },
+                                                    icon: Icon(
+                                                      MdiIcons.bookmarkPlusOutline,
+                                                      size: 20,
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ],

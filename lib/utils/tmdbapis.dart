@@ -213,7 +213,7 @@ class TMDBAPIS {
   }
 
   static Future<PopularMoviesModel> popularMovies() async {
-    String url = "$popularMoviesEndpoint";
+    String url = popularMoviesEndpoint;
     Map<String, dynamic> rawMap = await callAPI(url);
     // Now I have my tvseason results
     late PopularMoviesModel results;
@@ -229,7 +229,7 @@ class TMDBAPIS {
   }
 
   static Future<LatestMoviesModel> latestMovies() async {
-    String url = "$latestMoviesEndpoint";
+    String url = latestMoviesEndpoint;
     Map<String, dynamic> json = await callAPI(url);
     // Now I have my tvseason results
     late LatestMoviesModel results;
@@ -245,7 +245,7 @@ class TMDBAPIS {
   }
 
   static Future<TopRatedMoviesModel> toprated() async {
-    String url = "$topRatedMoviesEndpoint";
+    String url = topRatedMoviesEndpoint;
     Map<String, dynamic> json = await callAPI(url);
     // Now I have my tvseason results
     late TopRatedMoviesModel results;
@@ -260,8 +260,8 @@ class TMDBAPIS {
     return results;
   }
 
-  static Future<UpcomingMoviesModel> UpcomingMovies() async {
-    String url = "$upcomingMoviesEndpoint";
+  static Future<UpcomingMoviesModel> upcomingMovies() async {
+    String url = upcomingMoviesEndpoint;
     Map<String, dynamic> json = await callAPI(url);
     // Now I have my tvseason results
     late UpcomingMoviesModel results;

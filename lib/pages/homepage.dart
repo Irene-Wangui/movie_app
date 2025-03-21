@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+
 import 'package:smokeless_movies/pages/movie_details_page.dart';
 import 'package:smokeless_movies/pages/movie_list_page.dart';
-import 'package:smokeless_movies/searchmodels/movie_search_results_model.dart';
+
 import 'package:smokeless_movies/searchmodels/multi_search_results_model.dart';
 import 'package:smokeless_movies/trendingmodels/trending_movies_results.dart';
 import 'package:smokeless_movies/trendingmodels/trending_tv_results.dart';
 import 'package:smokeless_movies/utils/tmdbapis.dart';
-import 'package:smokeless_movies/widgets/medial_list_widget.dart';
 import 'package:smokeless_movies/widgets/search/smokeless_search_delegate.dart';
 import 'package:smokeless_movies/widgets/trending/trending_movies_widgets.dart';
 import 'package:smokeless_movies/widgets/trending/trending_tv_widgets.dart';
@@ -37,11 +37,13 @@ class _HomePageState extends State<HomePage> {
   ];
   //Trending tv and movieshows
   late Future<TrendingMoviesResults> trendingmovies;
+  late Future<TrendingTvResults> trendingtv;
 
   @override
   void initState() {
     super.initState();
     trendingmovies = TMDBAPIS.trendingMovie();
+    trendingtv = TMDBAPIS.trendingTvResults();
   }
 
   @override
@@ -82,7 +84,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // Movie Categories Scrollable Row
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
             child: Text("Categories", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -146,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                 TextButton(
                   onPressed: () {
                     log("Pressed View All");
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => MovieListPage()));
                   },
                   child: const Text(
                     "View All",

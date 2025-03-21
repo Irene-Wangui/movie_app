@@ -14,8 +14,8 @@ class MediaColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 150,
-        height: 225,
+        width: 120,
+        height: 180,
         child: TextButton(
           onPressed: () {
             log("pressed this item");
@@ -36,11 +36,11 @@ class MediaColumn extends StatelessWidget {
           child: Column(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(10),
                 child: CachedNetworkImage(
                   imageUrl: 'https://image.tmdb.org/t/p/w154${media.posterpath}',
-                  width: 140,
-                  height: 210,
+                  width: 100,
+                  height: 150,
                 ),
               ),
               Text(
