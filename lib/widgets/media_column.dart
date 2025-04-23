@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:smokeless_movies/pages/movie_details_page.dart';
-import 'package:smokeless_movies/pages/movie_list_page.dart';
+
 import 'package:smokeless_movies/pages/series_details_page.dart';
 import 'package:smokeless_movies/widgets/medial_list_widget.dart';
 
@@ -25,7 +25,7 @@ class MediaColumn extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => MovieDetailsPage(id: media.id),
                   ));
-            } else if (media.mediaType == 'Tvshow') {
+            } else if (media.mediaType == 'tv') {
               Navigator.push(
                   context,
                   MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smokeless_movies/pages/homepage.dart';
 import 'package:smokeless_movies/pages/movie_list_page.dart';
 import 'package:smokeless_movies/pages/profile_pages/profile_page.dart';
+import 'package:smokeless_movies/pages/tv_list_page.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -16,7 +17,7 @@ class _LandingPageState extends State<LandingPage> {
   List<Widget> pages = [
     HomePage(),
     MovieListPage(),
-    Center(child: Text("TV Shows")),
+    TvListPage(),
     Myprofile(),
   ];
 

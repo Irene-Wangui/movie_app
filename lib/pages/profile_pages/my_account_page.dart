@@ -16,7 +16,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
   User? user = FirebaseAuth.instance.currentUser;
   final authcontroller = Get.find<AuthController>();
 
-  Future<void> _showSignOutDialog() async {
+  Future<void> showSignOutDialog() async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -26,7 +26,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: Text("Cancel"),
             ),
@@ -48,7 +48,6 @@ class _MyAccountPageState extends State<MyAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    // If no user is logged in, show a message or redirect to sign-in page
     if (user == null) {
       return Scaffold(
         body: Center(
@@ -69,7 +68,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
             CircleAvatar(
               radius: 50,
               backgroundImage: CachedNetworkImageProvider(
-                user?.photoURL ?? "https://www.example.com/default-avatar.png", // Replace with a valid default URL
+                user?.photoURL ?? "https://www.example.com/default-avatar.png",
               ),
             ),
             SizedBox(height: 16),
@@ -84,9 +83,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             SizedBox(height: 16),
-            // Sign-out button with confirmation dialog
+
             ElevatedButton(
-              onPressed: _showSignOutDialog, // Show the confirmation dialog
+              onPressed: showSignOutDialog,
               child: Text("Sign Out"),
             ),
           ],

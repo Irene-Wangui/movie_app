@@ -1,0 +1,2 @@
+C:/Sideprojects/smokeless_movies/android/app/.cxx/Debug/2d9515i1/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Sideprojects/smokeless_movies/android/app/.cxx/Debug/2d9515i1/armeabi-v7a/CMakeFiles/rebuild_cache.dir

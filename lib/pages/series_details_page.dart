@@ -1,8 +1,15 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:smokeless_movies/controllers/media_controller.dart';
+import 'package:smokeless_movies/my_media_model/media_model.dart';
 import 'package:smokeless_movies/pages/season_details_page.dart';
 import 'package:smokeless_movies/pages/series_cast_page.dart';
 import 'package:smokeless_movies/tvmodels/series_details_model.dart';
+
 import 'package:smokeless_movies/utils/tmdbapis.dart';
 
 class SeriesDetailsPage extends StatelessWidget {
@@ -12,8 +19,9 @@ class SeriesDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaController mediaController = Get.put(MediaController());
     return SizedBox(
-        height: 180,
+        height: 100,
         child: FutureBuilder<SeriesDetails>(
             future: TMDBAPIS.tvSeriesDetails(
               id,
@@ -70,8 +78,8 @@ class SeriesDetailsPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(
-                                      width: 110,
-                                      //height: 100,
+                                      width: 120,
+                                      height: 100,
                                     ),
                                     Column(
                                       children: [
@@ -83,7 +91,7 @@ class SeriesDetailsPage extends StatelessWidget {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        const SizedBox(height: 8),
+                                        const SizedBox(height: 5),
                                         Row(
                                           children: [
                                             Text('${seriesDetails.firstAirDate!.year}'),
@@ -103,6 +111,38 @@ class SeriesDetailsPage extends StatelessWidget {
                                           children: [
                                             const Icon(Icons.star, color: Colors.yellow),
                                             Text(seriesDetails.voteAverage!.toStringAsFixed(1)),
+                                            // Spacer(),
+                                            GetBuilder(
+                                                init: MediaController(),
+                                                initState: (state) {
+                                                  log("state mounted");
+                                                  mediaController.fetchMediaDetails('tv', seriesDetails.id.toString());
+                                                },
+                                                builder: (_) => IconButton(
+                                                      onPressed: () async {
+                                                        if (mediaController.isBookMarked.value) {
+                                                          log("Is bookmarked");
+                                                        }
+                                                        log('should toogle bookmark');
+                                                        //implement my media model
+                                                        final media = MymediaModel(
+                                                          id: "series-${seriesDetails.id}",
+                                                          tmdbId: seriesDetails.id.toString(),
+                                                          title: seriesDetails.name.toString(),
+                                                          mediaType: 'tv',
+                                                          posterPath: seriesDetails.posterPath,
+                                                          dateAdded: DateTime.now(),
+                                                          releaseDate: seriesDetails.firstAirDate,
+                                                        );
+                                                        await mediaController.toggle(media);
+                                                      },
+                                                      icon: Icon(
+                                                        mediaController.isBookMarked.value
+                                                            ? MdiIcons.bookmarkMinus
+                                                            : MdiIcons.bookmarkPlusOutline,
+                                                        size: 24,
+                                                      ),
+                                                    ))
                                           ],
                                         ),
                                       ],

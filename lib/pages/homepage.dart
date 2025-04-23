@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:smokeless_movies/controllers/notifications_controller.dart';
 
 import 'package:smokeless_movies/pages/movie_details_page.dart';
 import 'package:smokeless_movies/pages/movie_list_page.dart';
@@ -49,7 +51,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Smokeless Movies')),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text('Smokeless Movies'),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+      ),
       body: ListView(
         children: [
           Padding(

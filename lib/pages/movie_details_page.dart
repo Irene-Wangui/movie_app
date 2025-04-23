@@ -2,16 +2,17 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:smokeless_movies/controllers/media_controller.dart';
 import 'package:smokeless_movies/movie/moviedetails_model.dart';
 import 'package:smokeless_movies/pages/moviecastpage.dart';
 import 'package:smokeless_movies/utils/firebase_apis.dart';
 import 'package:smokeless_movies/utils/tmdbapis.dart';
-import 'package:uuid/uuid.dart';
 
-import 'my _media_model/media_model.dart';
+import '../my_media_model/media_model.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   final String id;
@@ -19,6 +20,7 @@ class MovieDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MediaController mediaController = Get.put(MediaController());
     return SizedBox(
         height: 180,
         child: FutureBuilder<MovieDetails>(
@@ -90,7 +92,7 @@ class MovieDetailsPage extends StatelessWidget {
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              const SizedBox(height: 8),
+                                              const SizedBox(height: 5),
                                               Row(
                                                 children: [
                                                   Text('${moviedetails.releaseDate!.year}'),
@@ -105,28 +107,39 @@ class MovieDetailsPage extends StatelessWidget {
                                                 children: [
                                                   const Icon(Icons.star, color: Colors.yellow),
                                                   Text(moviedetails.voteAverage!.toStringAsFixed(1)),
-                                                  Spacer(),
-                                                  IconButton(
-                                                    onPressed: () {
-                                                      log('should toogle bookmark');
-                                                      //implement my media model
-                                                      final media = MymediaModel(
-                                                        id: Uuid().v4(),
-                                                        tmdbId: moviedetails.id.toString(),
-                                                        title: moviedetails.title.toString(),
-                                                        mediaType: 'movie',
-                                                        posterPath: moviedetails.posterPath,
-                                                        dateAdded: DateTime.now(),
-                                                        releaseDate: moviedetails.releaseDate,
-                                                      );
-                                                      log(jsonEncode(media.toMap()));
-                                                      FirebaseApis.uploadMyMedia(media);
-                                                    },
-                                                    icon: Icon(
-                                                      MdiIcons.bookmarkPlusOutline,
-                                                      size: 20,
-                                                    ),
-                                                  )
+                                                  // Spacer(),
+                                                  GetBuilder(
+                                                      init: MediaController(),
+                                                      initState: (state) {
+                                                        log("state mounted");
+                                                        mediaController.fetchMediaDetails(
+                                                            'movie', moviedetails.id.toString());
+                                                      },
+                                                      builder: (_) => IconButton(
+                                                            onPressed: () async {
+                                                              if (mediaController.isBookMarked.value) {
+                                                                log("Is bookmarked");
+                                                              }
+                                                              log('should toogle bookmark');
+                                                              //implement my media model
+                                                              final media = MymediaModel(
+                                                                id: "movie-${moviedetails.id}",
+                                                                tmdbId: moviedetails.id.toString(),
+                                                                title: moviedetails.title.toString(),
+                                                                mediaType: 'movie',
+                                                                posterPath: moviedetails.posterPath,
+                                                                dateAdded: DateTime.now(),
+                                                                releaseDate: moviedetails.releaseDate,
+                                                              );
+                                                              await mediaController.toggle(media);
+                                                            },
+                                                            icon: Icon(
+                                                              mediaController.isBookMarked.value
+                                                                  ? MdiIcons.bookmarkMinus
+                                                                  : MdiIcons.bookmarkPlusOutline,
+                                                              size: 24,
+                                                            ),
+                                                          ))
                                                 ],
                                               ),
                                             ],

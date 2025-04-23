@@ -3,17 +3,18 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:smokeless_movies/movie/moviedetails_model.dart';
-import 'package:smokeless_movies/movielistmodels/latest_movies_model.dart';
-import 'package:smokeless_movies/movielistmodels/popular_movies_model.dart';
-import 'package:smokeless_movies/movielistmodels/top_rated_movies.dart';
-import 'package:smokeless_movies/movielistmodels/upcoming-movies.dart';
+import 'package:smokeless_movies/movie/movielistmodels/latest_movies_model.dart';
+import 'package:smokeless_movies/movie/movielistmodels/popular_movies_model.dart';
+import 'package:smokeless_movies/movie/movielistmodels/top_rated_movies.dart';
+import 'package:smokeless_movies/movie/movielistmodels/upcoming-movies.dart';
+import 'package:smokeless_movies/tv_list_models/popular_tv_shows_model.dart';
+import 'package:smokeless_movies/tv_list_models/top_rated_tv_shows_model.dart';
 import 'package:smokeless_movies/tvmodels/season_details_model.dart';
 import 'package:smokeless_movies/searchmodels/movie_search_results_model.dart';
 import 'package:smokeless_movies/searchmodels/multi_search_results_model.dart';
 import 'package:smokeless_movies/searchmodels/person_search_results_model.dart';
 import 'package:smokeless_movies/searchmodels/tv_search_results_model.dart';
 import 'package:smokeless_movies/trendingmodels/trending_tv_results.dart';
-
 import 'package:smokeless_movies/tvmodels/series_details_model.dart';
 import 'package:smokeless_movies/utils/secrets.dart';
 import 'package:smokeless_movies/trendingmodels/trending_movies_results.dart';
@@ -39,6 +40,9 @@ class TMDBAPIS {
   static String upcomingMoviesEndpoint = "$baseUrl/movie/now_playing";
   static String latestMoviesEndpoint = "$baseUrl/movie/top_rated";
   static String topRatedMoviesEndpoint = "$baseUrl/movie/upcoming";
+  //tv show constants
+  static String popularTvEndpoint = "$baseUrl/tv/popular";
+  static String topRatedTvEndpoint = "$baseUrl/tv/top_rated";
 
   static Future<Map<String, dynamic>> callAPI(String url) async {
     log("url: $url");
@@ -263,7 +267,7 @@ class TMDBAPIS {
   static Future<UpcomingMoviesModel> upcomingMovies() async {
     String url = upcomingMoviesEndpoint;
     Map<String, dynamic> json = await callAPI(url);
-    // Now I have my tvseason results
+    // Now I have my upcoming movies results
     late UpcomingMoviesModel results;
     // Attempt to convert the JSON into your model
     try {
@@ -271,6 +275,38 @@ class TMDBAPIS {
       log("Successfully parsed TV results data:");
     } catch (e, stackTrace) {
       log("Unexpected error during season details results model conversion: $e\n$stackTrace");
+      throw Exception("TV Results Data conversion failed: $e");
+    }
+    return results;
+  }
+
+  static Future<TopRatedTvModel> topRatedTvshows() async {
+    String url = topRatedTvEndpoint;
+    Map<String, dynamic> json = await callAPI(url);
+    // Now I have my top rated tv shows results
+    late TopRatedTvModel results;
+    // Attempt to convert the JSON into your model
+    try {
+      results = TopRatedTvModel.fromMap(json);
+      log("Successfully parsed TV results data:");
+    } catch (e, stackTrace) {
+      log("Unexpected error during Top Rated tv show results model conversion: $e\n$stackTrace");
+      throw Exception("TV Results Data conversion failed: $e");
+    }
+    return results;
+  }
+
+  static Future<PopularTvModel> popularTvshows() async {
+    String url = popularTvEndpoint;
+    Map<String, dynamic> json = await callAPI(url);
+    // Now I have my popular tv shows results
+    late PopularTvModel results;
+    // Attempt to convert the JSON into your model
+    try {
+      results = PopularTvModel.fromMap(json);
+      log("Successfully parsed TV results data:");
+    } catch (e, stackTrace) {
+      log("Unexpected error during Top Rated tv show results model conversion: $e\n$stackTrace");
       throw Exception("TV Results Data conversion failed: $e");
     }
     return results;

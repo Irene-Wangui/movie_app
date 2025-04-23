@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../pages/my _media_model/media_model.dart';
+import '../my_media_model/media_model.dart';
 
 class FirebaseApis {
   static final db = FirebaseFirestore.instance;

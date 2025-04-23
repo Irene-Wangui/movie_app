@@ -14,7 +14,7 @@ class SeasonDetailsScreen extends StatefulWidget {
 }
 
 class SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
-  int selectedSeason = 1; // Default to season 1
+  int selectedSeason = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,6 @@ class SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
           }).toList(),
         ),
       ),
-
-      // Episodes List
       Expanded(
         child: FutureBuilder<SeasonDetailsModel>(
           future: TMDBAPIS.tvSeasonDetails(widget.seriesId, selectedSeason.toString()),
